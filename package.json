@@ -1,0 +1,17 @@
+{
+  "name": "multhi-thread",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "single": "set UV_THREADPOOL_SIZE=1 & nodemon singleThreadServer.js",
+    "multhi": "set UV_THREADPOOL_SIZE=1 & nodemon multhiThreadServer.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2"
+  }
+}

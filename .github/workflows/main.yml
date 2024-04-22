@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-       - uses: actions/checkout@v2
        - name: Setup Node.js environment
          uses: actions/setup-node@v4.0.2
          with:
@@ -19,9 +18,9 @@ jobs:
        - name: Run test
          run: npm test
        - name: Run single
-         run: npm "start-single"
+         run: npm run start-single
        - name: Run multhi
-         run: npm "start-multhi"
+         run: npm run start-multhi
        
  deploy:
      runs-on: ubuntu-latest

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "single": "set UV_THREADPOOL_SIZE=1 & nodemon singleThreadServer.js",
-    "multhi": "set UV_THREADPOOL_SIZE=1 & nodemon multhiThreadServer.js"
+    "single": "set UV_THREADPOOL_SIZE=1 & nodemon src/single/singleThreadServer.js",
+    "multhi": "set UV_THREADPOOL_SIZE=1 & nodemon src/multi/multhiThreadServer.js"
   },
   "author": "",
   "license": "ISC",

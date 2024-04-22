@@ -1,7 +1,4 @@
-const express = require("express")
-const app = express()
-
-function sumOfSimples(n) {
+async function sumOfSimples(n) {
   let sum = 0
   let i, j
   for (i = 2; i <= n; i++) {
@@ -17,15 +14,19 @@ function sumOfSimples(n) {
   return sum
 }
 
-app.get("/", (req, res) => {
+async function singleThread (req, res) {
   const startTime = new Date().getTime()
-  const sum = sumOfSimples(req.query.number)
+  const sum = await sumOfSimples(60000);
   const endTime = new Date().getTime()
-  res.json({
-    number: req.query.number,
-    sum: sum,
-    timeTaken: (endTime - startTime) / 1000 + " seconds",
-  })
-})
+  
+  res.status(200)
+    .json({
+      number: req.query.number,
+      sum: sum,
+      timeTaken: (endTime - startTime) + " ms",
+    })
+}
 
-app.listen(6767, () => console.log("listening on port 6767"))
+module.exports = {
+  singleThread
+}

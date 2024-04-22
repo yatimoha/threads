@@ -1,9 +1,8 @@
-const express = require("express")
-const app = express()
 const { Worker } = require("worker_threads")
+
 function runWorker(workerData) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker("./sumOfSimplesWorker.js", {
+    const worker = new Worker("./src/worker/sumOfSimplesWorker.js", {
       workerData,
     })
     worker.on("message", resolve);
@@ -34,20 +33,25 @@ function splitWork() {
   return Promise.all([worker1, worker2, worker3, worker4])
 }
 
-app.get("/", async (req, res) => {
-  const startTime = new Date().getTime()
-  const sum = await splitWork()
-    .then((values) =>
-      values.reduce((accumulator, part) => accumulator + part.result, 0)
-    )
-    .then(finalAnswer => finalAnswer)
+async function multiTread(req, res) {
+    const startTime = new Date().getTime()
+    const sum = await splitWork()
+      .then((values) =>
+        values.reduce((accumulator, part) => accumulator + part.result, 0)
+      )
+      .then(finalAnswer => finalAnswer)
+    
+    const endTime = new Date().getTime()
   
-  const endTime = new Date().getTime()
-  res.json({
-    number: 60000,
-    sum: sum,
-    timeTaken: (endTime - startTime) / 1000 + " seconds",
-  })
-})
+    res.status(200)
+    res.json({
+      number: 60000,
+      sum: sum,
+      timeTaken: (endTime - startTime) + " ms",
+    })
+  }
 
-app.listen(7777, () => console.log("listening on port 7777"))
+module.exports = {
+  multiTread
+}
+

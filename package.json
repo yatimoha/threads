@@ -2,16 +2,22 @@
   "name": "multhi-thread",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "single": "set UV_THREADPOOL_SIZE=1 & nodemon src/single/singleThreadServer.js",
-    "multhi": "set UV_THREADPOOL_SIZE=1 & nodemon src/multi/multhiThreadServer.js"
+    "start": "node src",
+    "start-single": "set UV_THREADPOOL_SIZE=1 & node src",
+    "start-multhi": "set UV_THREADPOOL_SIZE=4 & node src",
+    "test": "jest src/app.test.js"
   },
-  "author": "",
+  "author": "Tim",
   "license": "ISC",
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.2",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
   }
 }

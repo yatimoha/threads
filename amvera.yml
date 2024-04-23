@@ -4,6 +4,10 @@ meta:
     name: npm
     version: 20.9.x
 
+build:
+
 run:
+  scriptName: index.js
   command: npm run start
+  persistenceMount: /data
   containerPort: 3000

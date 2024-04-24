@@ -2,9 +2,7 @@ meta:
   environment: node
   toolchain:
     name: npm
-    version: 20.9.x
-
-build:
+    version: 20
 
 run:
   scriptName: index.js

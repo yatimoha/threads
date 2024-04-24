@@ -15,13 +15,16 @@ async function sumOfSimples(n) {
 }
 
 async function singleThread (req, res) {
+  let number = 0;
+  if (req.query?.number) number = req.query.number
   const startTime = new Date().getTime()
-  const sum = await sumOfSimples(60000);
+  const sum = await sumOfSimples(number);
   const endTime = new Date().getTime()
   
+  console.log('single-thread ends in: ', (endTime - startTime) + " ms")
   res.status(200)
     .json({
-      number: req.query.number,
+      number: number,
       sum: sum,
       timeTaken: (endTime - startTime) + " ms",
     })

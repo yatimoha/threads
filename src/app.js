@@ -6,58 +6,58 @@ const { multiTread } = require("./multi/multhiThreadServer")
 
 function cryproAsync(start) {
   
-  const crypto1 = () => {
-    return new Promise((resolve) => {
+  const crypto1 = new Promise((resolve) => {
       crypto.pbkdf2('password123', '1', 1000000, 64, 'sha512', () => {
         console.log(`1 end, ${Date.now() - start}ms`);
         resolve()
       })
     })
-  }
   
-  const crypto2 = () => {
-    return new Promise((resolve) => {
+  
+  const crypto2 = new Promise((resolve) => {
       crypto.pbkdf2('password123', '1', 1000000, 64, 'sha512', () => {
         console.log(`2 end, ${Date.now() - start}ms`);
         resolve()
       })
     })
-  }
-  const crypto3 = () => {
-    return new Promise((resolve) => {
+  
+  const crypto3 = new Promise((resolve) => {
       console.log('alo vadim')
       crypto.pbkdf2('password123', '1', 1000000, 64, 'sha512', () => {
         console.log(`3 end, ${Date.now() - start}ms`);
         resolve()
       })
     })
-  }
-  const crypto4 = () => {
-    return new Promise((resolve) => {
+  
+  const crypto4 = new Promise((resolve) => {
       crypto.pbkdf2('password123', '1', 1000000, 64, 'sha512', () => {
         console.log(`4 end, ${Date.now() - start}ms`);
         resolve()
       })
     })
-  }
-  const crypto5 = () => {
-    return new Promise(async (resolve) => {
+  
+  const crypto5 =  new Promise(async (resolve) => {
       await crypto.pbkdf2('password123', '1', 1000000, 64, 'sha512', () => {
         console.log(`5 end, ${Date.now() - start}ms`);
         resolve()
       })
     })
-  }
-
+  
   return Promise.all([crypto1, crypto2, crypto3, crypto4, crypto5])
 }
 app.get("/crypto", async (req, res) => {
   const start = Date.now();
-  
-  await cryproAsync(start)
 
-  const countTime = Date.now() - start;
-  res.status(200).json(`finished in ${countTime}ms`)
+  cryproAsync(start)
+    .then(() => {
+      const countTime = Date.now() - start;
+      res.status(200).json(`finished in ${countTime}ms`)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(400).send()
+    })
+  
 })
 
 const findSimpleNums = number => {

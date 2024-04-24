@@ -15,40 +15,59 @@ function runWorker(workerData) {
   })
 }
 
-function splitWork() {
-  const start1 = 2
-  const end1 = 15000
-  const start2 = 15001
-  const end2 = 30000
-  const start3 = 30001
-  const end3 = 45000
-  const start4 = 45001
-  const end4 = 60000
-  
-  const worker1 = runWorker({ start: start1, end: end1 })
-  const worker2 = runWorker({ start: start2, end: end2 })
-  const worker3 = runWorker({ start: start3, end: end3 })
-  const worker4 = runWorker({ start: start4, end: end4 })
-  
-  return Promise.all([worker1, worker2, worker3, worker4])
+function splitWork(taskArr) {
+  if (taskArr.length === 1) return runWorker(taskArr[0])
+  const workers = taskArr.map((item) => runWorker(item))
+  return Promise.all(workers)
 }
 
-async function multiTread(req, res) {
-    const startTime = new Date().getTime()
-    const sum = await splitWork()
-      .then((values) =>
-        values.reduce((accumulator, part) => accumulator + part.result, 0)
-      )
-      .then(finalAnswer => finalAnswer)
-    
-    const endTime = new Date().getTime()
+function splitTask(number, threads) {
+  const res = [];
   
-    res.status(200)
-    res.json({
-      number: 60000,
-      sum: sum,
-      timeTaken: (endTime - startTime) + " ms",
-    })
+  if (threads === 1) return res.push({
+    start: 1,
+    end: number,
+  })
+  
+  for (let i = 1; i <= threads; i++) {
+    const workerData = {
+      start: Math.floor(number * ((i - 1) / threads) + 1),
+      end: Math.floor(number * (i / threads)),
+    }
+    res.push(workerData)
+  }
+  
+  return res
+}
+
+
+async function multiTread(req, res) {
+    let number = 0;
+    let threads = 1;
+    if (req.query?.number) number = +req.query.number;
+    if (req.query?.threads) threads = req.query.threads;
+    const taskArr = splitTask(number, threads);
+    const startTime = new Date().getTime();
+    
+    await splitWork(taskArr)
+      .then((values) =>
+          values.reduce((accumulator, part) => accumulator + part.result, 0)
+      )
+      .then((finalAnswer) => {
+        const endTime = new Date().getTime();
+        res
+          .status(200)
+          .json({
+            number: number,
+            sum: finalAnswer,
+            timeTaken: (endTime - startTime) + " ms",
+          })
+        console.log('multi-thread ends in: ', (endTime - startTime) + " ms")
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(400).send()
+      })
   }
 
 module.exports = {

@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const { singleThread } = require("./single/singleThreadServer")
 const { multiTread } = require("./multi/multhiThreadServer")
+const { matrix } = require('./matrix/matrix');
+const { matrixMath } = require('./matrix/matrix-math');
 
 function cryproAsync(start) {
   
@@ -88,5 +90,9 @@ app.get("/issimple", async (req, res) => {
 app.get("/single-thread", singleThread)
 
 app.get("/multi-thread", multiTread)
+
+app.get("/matrix", matrix)
+
+app.get("/matrix-math", matrixMath)
 
 module.exports = app;

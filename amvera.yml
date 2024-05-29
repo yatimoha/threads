@@ -5,7 +5,7 @@ meta:
     version: 20
 
 run:
-  scriptName: index.js
+  scriptName: header.jsx
   command: npm run start
   persistenceMount: /data
   containerPort: 3000

@@ -1,0 +1,56 @@
+.fullscreen {
+  position: fixed;
+  top: 110%;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: all ease-in-out .4s;
+
+  &_visible {
+    top: 0;
+    transition: all ease-in-out .4s;
+  }
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: 1rem;
+
+  transform: translate(-50%, -50%);
+  color: #0e0c15;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+  }
+
+  &__header-el {
+    display: flex;
+
+  }
+
+  &__close {
+    position: absolute;
+    top: .5rem;
+    left: .5rem;
+    width: 60px;
+    height: 60px;
+    z-index: 10;
+
+    cursor: pointer;
+  }
+
+  &__main {
+    padding: 1rem;
+  }
+}
